@@ -1,45 +1,124 @@
 # Шпоргалка для натяжки шаблона
 
-## Общие элементы
+## Общие сведения
 
-Форма добавления в корзину:
+**Основной шаблон:** astrade.dv
+
+**Тема шаблона:** astrade
+
+------
+
+*Планы на будущее: добавить папку components в шаблон с готовыми компонетами. Например, один из компонентов - компонент yandex-карты, где ручками, пока что, указываем только координаты местонахождения компании, а остальная информация (адрес, название, и т.д.) подтягивается из админки. P.S. Уже реализованно на http://yunaeli.ru.*
+
+------
+
+*Дата последнего обновления: 31.03.2021*
+
+
+
+## Контактная информация
+
+**Название магазина:**
 
 ```html
-<form class="addtocart" method="post" action="{$wa->getUrl('/frontendCart/add')}">
-	<input type="hidden" name="quantity" value="1">
-	<input type="hidden" name="product_id" value="{$product.id}" />
-	<button type="submit">
-        В корзину
-    </button>
-</form>
+{$nameShop = $theme_settings.nameShop}
+```
+
+```
+{$nameShop}
+```
+
+**Полное название (с описанием):**
+
+```html
+{$nameShopFull = $theme_settings.nameShopFull}
+```
+
+```html
+{$nameShopFull}
+```
+
+**Описание:**
+
+```html
+{$descriptionShop = $theme_settings.descriptionShop}
+```
+
+```
+{$descriptionShop}
 ```
 
 
 
-Кнопка добавление в сравнение:
+**Массив адресов магазина:**
 
 ```html
-<button
-	class="compareBtn {if $wa->shop->inComparison($p.id)} compareRemove{else} compareAdd{/if}"
-	title="{if $wa->shop->inComparison($p.id)}Убрать из сравнения{else}В сравнение{/if}"
-	data-product="{$product.id}">
-	{if $wa->shop->inComparison($p.id)}Убрать из сравнения{else}В сравнение{/if}
-</button>
+{$tenAddr = "|"|explode:$theme_settings.address}
+```
+
+```
+{$tenAddr[0]}
 ```
 
 
 
-Кнопка быстрого просмотра:
+**Массив режимов работы:**
 
 ```html
-<button class="linkQuickView" data-href="{$p.frontend_url|cat: '?popup=1'}">
-    Быстрый просмотр
-</button>
+{$tenTime = "|"|explode:$theme_settings.times}
 ```
+
+```
+{$tenTime[0]}
+```
+
+
+
+**Массив чистых номеров (для атрибута ссылки href):**
+
+```html
+{$clearPhone = ","|explode:$theme_settings.phones|regex_replace:"/[^0-9,]/":""}
+```
+
+```html
+{$clearPhone[0]}
+```
+
+**Массив номеров по умолчанию (для красивого отображения):**
+
+```html
+{$tenPhone = ","|explode:$theme_settings.phones}
+```
+
+```
+{$tenPhone[0]}
+```
+
+```html
+<a href="tel:{$clearPhone[0]}">{$tenPhone[0]}</a>
+```
+
+
+
+**Массив E-mail адресов:**
+
+```html
+{$tenMail = ","|explode:$theme_settings.email}
+```
+
+```html
+{$tenMail[0]}
+```
+
+```html
+<a href="#" data-lredmod-id="order">{$tenMail[0]}</a>
+```
+
+
 
 ## Для шапки сайт
 
-Кол-во товаров в сравнении:
+**Кол-во товаров в сравнении:**
 
 ```html
 {$compare_count = explode(",", $smarty.cookies.shop_compare)|count - 1}
@@ -55,7 +134,7 @@
 
 
 
-Сумма и кол-во товаров в корзине:
+**Сумма и кол-во товаров в корзине:**
 
 ```html
 <span class="cart-count">{$cart_count}</span>
@@ -66,7 +145,7 @@
 
 
 
-Форма поиска:
+**Форма поиска:**
 
 ```html
 <form action="/search/" method="GET">
@@ -77,7 +156,7 @@
 
 
 
-Главное меню:
+**Главное меню:**
 
 ```html
 {* Главное меню *}
@@ -94,7 +173,7 @@
 
 
 
-Каталог:
+**Меню Каталога:**
 
 ```html
 {* Категория Каталог *}
@@ -124,7 +203,7 @@
 
 
 
-Каталог одноуровневый:
+**Каталог одноуровневый:**
 
 ```html
 {* Категория Каталог *}
@@ -143,7 +222,7 @@
 
 ## Карточка товара
 
-Обвертка для любой карточки товара:
+**Обвертка для любой карточки товара:**
 
 ```html
 <div
@@ -154,4 +233,41 @@
     data-card-price="{wa_currency_html($p.price, $p.currency)}">
     
 </div>
+```
+
+
+
+**Форма добавления в корзину:**
+
+```html
+<form class="addtocart" method="post" action="{$wa->getUrl('/frontendCart/add')}">
+	<input type="hidden" name="quantity" value="1">
+	<input type="hidden" name="product_id" value="{$product.id}" />
+	<button type="submit">
+        В корзину
+    </button>
+</form>
+```
+
+
+
+**Кнопка добавление в сравнение:**
+
+```html
+<button
+	class="compareBtn {if $wa->shop->inComparison($p.id)} compareRemove{else} compareAdd{/if}"
+	title="{if $wa->shop->inComparison($p.id)}Убрать из сравнения{else}В сравнение{/if}"
+	data-product="{$product.id}">
+	{if $wa->shop->inComparison($p.id)}Убрать из сравнения{else}В сравнение{/if}
+</button>
+```
+
+
+
+**Кнопка быстрого просмотра:**
+
+```html
+<button class="linkQuickView" data-href="{$p.frontend_url|cat: '?popup=1'}">
+    Быстрый просмотр
+</button>
 ```
