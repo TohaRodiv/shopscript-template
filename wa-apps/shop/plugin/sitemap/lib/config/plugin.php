@@ -1,9 +1,9 @@
 <?php
 return [
-	'name' => 'sitemap',
+	'name' => 'Карта сайта',
 	'img' => 'img/sitemap.png',
-	'vendor' => '',
-	'description' => '',
+	'vendor' => 'KNeon',
+	'description' => 'Простая карта сайта, которая генерирует страницу по категориям и меню (приложение "Управление меню")',
 	'version' => '1.0',
 	'frontend' => true,
 ];
