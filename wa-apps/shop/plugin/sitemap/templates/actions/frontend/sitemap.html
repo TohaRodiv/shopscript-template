@@ -1,0 +1,69 @@
+{if $pages}
+	<ul>
+		{foreach $pages as $page}
+			<li>
+				{if $page.is_link}
+					<a href="{$page.frontend_url}">{$page.name}</a>
+				{else}
+					<strong>{$page.name}</strong>
+				{/if}
+				{if $page.childs}
+
+					<ul>
+						{foreach $page.childs as $child2}
+							<li>
+								<a href="{$child2.frontend_url}">{$child2.name}</a>
+								{if $child2.childs}
+
+									<ul>
+										{foreach $child2.childs as $child3}
+											<li>
+												<a href="{$child3.frontend_url}">{$child3.name}</a>
+												{if $child3.childs}
+
+													<ul>
+														{foreach $child3.childs as $child4}
+															<li>
+																<a href="{$child4.frontend_url}">{$child4.name}</a>
+																{if $child4.childs}
+
+																	<ul>
+																		{foreach $child4.childs as $child5}
+																			<li>
+																				<a href="{$child5.frontend_url}">{$child5.name}</a>
+																				{if $child5.childs}
+																					<ul>
+																						{foreach $child5.childs as $child6}
+																							<li>
+																								<a href="{$child6.frontend_url}">{$child6.name}</a>
+																								{if $child6.childs}
+
+																								{/if}
+																							</li>
+																						{/foreach}
+																					</ul>
+																				{/if}
+																			</li>
+																		{/foreach}
+																	</ul>
+
+																{/if}
+															</li>
+														{/foreach}
+													</ul>
+
+												{/if}
+											</li>
+										{/foreach}
+									</ul>
+
+								{/if}
+							</li>
+						{/foreach}
+					</ul>
+
+				{/if}
+			</li>
+		{/foreach}
+	</ul>
+{/if}
