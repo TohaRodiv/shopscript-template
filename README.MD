@@ -21,7 +21,8 @@
 **Название магазина:**
 
 ```html
-{$nameShop = $theme_settings.nameShop}
+{* Название магазина *}
+{$nameShop = $theme_settings.sitename}
 ```
 
 ```
@@ -31,7 +32,8 @@
 **Полное название (с описанием):**
 
 ```html
-{$nameShopFull = $theme_settings.nameShopFull}
+{* Полное описание *}
+{$nameShopFull = $theme_settings.fullDescription}
 ```
 
 ```html
@@ -41,11 +43,31 @@
 **Описание:**
 
 ```html
-{$descriptionShop = $theme_settings.descriptionShop}
+{$fullDescription = $theme_settings.description}
 ```
 
 ```
-{$descriptionShop}
+{$fullDescription}
+```
+
+**Теглайн:**
+
+```
+{$tagline = $theme_settings.tagline}
+```
+
+```
+{$tagline}
+```
+
+**Полный путь логотипа:**
+
+```
+{$logo = $wa_theme_url|cat:$theme_settings.logo}
+```
+
+```
+{$logo}
 ```
 
 
@@ -179,26 +201,55 @@
 {* Категория Каталог *}
 {$categories = $wa->shop->categories(32, null, true)}
 
-    <ul class="category-list nav navbar-nav">
-        {foreach $categories as $cat}
-            <li class="menu-item{if $cat.childs} dropdown{/if}">
-                <a href="{$cat.url}"{if $cat.childs} class="dropdown-toggle"{/if}>{$cat.name}</a>
-                {if $cat.childs}
-                    <div class="dropdown-menu single-dropdown">
-                        <div class="dropdown-inner">
-                            <ul class="list-unstyled megamenu-dropdown column3">
-                                {foreach $cat.childs as $child1}
-                                    <li class="menu-item{if $childs1.childs} dropdown{/if}">
-                                        <a href="{$child1.url}"{if $child1.childs} class="dropdown-toggle"{/if}>{$child1.name}</a>
-                                    </li>
-                                {/foreach}
-                            </ul>
-                        </div>
-                    </div>
-                {/if}
-            </li>
-        {/foreach}
-    </ul>
+<ul id="top-menu" class="top-menu" data-depth="0">
+						{foreach $categories as $cat}
+						<li class="top_level_category dropdown">
+						   <a class="dropdown-item" href="{$cat.url}">{$cat.name}
+						   {if $cat.childs}
+						   <i class="fa fa-angle-right add hidden-xs hidden-sm"></i>
+						   {/if}
+						   </a>
+						   {if $cat.childs}
+						   <span class="pull-xs-right hidden-md hidden-lg">
+						   <span data-target="#top_sub_menu_{$cat.id}" data-toggle="collapse" class="navbar-toggler collapse-icons">
+						   <i class="fa fa-angle-down add"></i>
+						   <i class="fa fa-angle-up remove"></i>
+						   </span>
+						   </span>
+						   {/if}
+						   {if $cat.childs}
+						   <div id="top_sub_menu_{$cat.id}" class="dropdown-menu popover sub-menu collapse">
+							  {foreach $cat.childs as $child}
+							  <ul class="list-unstyled childs_1 category_dropdownmenu  multiple-dropdown-menu " data-depth="1">
+								 <li class="category dropdown sub-category">
+									<a class="dropdown-item dropdown-submenu" href="{$child.url}">{$child.name}</a>
+									{if $child.childs}
+									<span class="pull-xs-right hidden-md hidden-lg">
+									<span data-target="#top_sub_menu_{$child.id}" data-toggle="collapse" class="navbar-toggler collapse-icons">
+									<i class="fa fa-angle-down add"></i>
+									<i class="fa fa-angle-up remove"></i>
+									</span>
+									</span>
+									{/if}
+									{if $child.childs}
+									<div id="top_sub_menu_{$child.id}" class="dropdown-inner collapse">
+									   <ul class="list-unstyled childs_2 top-menu" data-depth="2">
+										  {foreach $child.childs as $child2}
+										  <li class="category">
+											 <a class="dropdown-item" href="{$child2.url}">{$child2.name}</a>
+										  </li>
+										  {/foreach}
+									   </ul>
+									</div>
+									{/if}
+								 </li>
+							  </ul>
+							  {/foreach}
+						   </div>
+						   {/if}
+						</li>
+						{/foreach}                        
+					 </ul>
 ```
 
 
