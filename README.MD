@@ -2,17 +2,13 @@
 
 ## Общие сведения
 
-**Основной шаблон:** astrade.dv
+------
 
-**Тема шаблона:** astrade
+*Планы на будущее: добавить папку components в шаблон с готовыми компонетами. Например, один из компонентов - компонент yandex-карты, где ручками, пока что, указываем только координаты местонахождения компании, а остальная информация (адрес, название, и т.д.) подтягивается из админки.
 
 ------
 
-*Планы на будущее: добавить папку components в шаблон с готовыми компонетами. Например, один из компонентов - компонент yandex-карты, где ручками, пока что, указываем только координаты местонахождения компании, а остальная информация (адрес, название, и т.д.) подтягивается из админки. P.S. Уже реализованно на https://yunaeli.ru/contacts/*
-
-------
-
-*Дата последнего обновления: 31.03.2021*
+*Дата последнего обновления: 07.04.2021*
 
 
 
@@ -322,3 +318,23 @@
     Быстрый просмотр
 </button>
 ```
+
+
+
+## Готовые стили
+
+**Для личного кабинета и страниц авторизации и звездочки отзывов**:
+
+```css
+.over{overflow:auto}
+.order-status{color:#fff;font-size:13px;padding:4px}
+.icon16.star,.icon16.star-full{background-image:url(../img/icons.png);background-position:-16px 0}
+.icon16.star-half{background-image:url(../img/icons.png);background-position:-32px 0}
+.icon16.star-empty{background-image:url(../img/icons.png);background-position:-48px 0}
+.icon16.star-hover{background-image:url(../img/icons.png);background-position:-64px 0}
+.icon16{width:16px;height:16px;display:inline-block}
+.wa-field input:not([type="submit"]),.wa-field select, .wa-field-wrapper input:not([type="submit"]),.wa-field-wrapper select{display:inline-block;width:100%!important;margin-bottom:10px;border:1px solid #333;position:relative!important;height:auto!important;opacity:1!important;font-size:16px!important;padding:8px!important}
+@media(min-width:768px) {
+.wa-form,.wa-login-form-fields,.wa-signup-form-fields,.wa-forgotpassword-form-fields{width:50%}
+```
+
