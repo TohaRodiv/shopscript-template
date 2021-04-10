@@ -1,18 +1,14 @@
-# Шпоргалка для натяжки шаблона
+# Шпаргалка для натяжки шаблона
 
 ## Общие сведения
 
-**Основной шаблон:** astrade.dv
+------
 
-**Тема шаблона:** astrade
+*Планы на будущее: добавить папку components в шаблон с готовыми компонетами. Например, один из компонентов - компонент yandex-карты, где ручками, пока что, указываем только координаты местонахождения компании, а остальная информация (адрес, название, и т.д.) подтягивается из админки.
 
 ------
 
-*Планы на будущее: добавить папку components в шаблон с готовыми компонетами. Например, один из компонентов - компонент yandex-карты, где ручками, пока что, указываем только координаты местонахождения компании, а остальная информация (адрес, название, и т.д.) подтягивается из админки. P.S. Уже реализованно на https://yunaeli.ru/contacts/*
-
-------
-
-*Дата последнего обновления: 31.03.2021*
+*Дата последнего обновления: 07.04.2021*
 
 
 
@@ -21,7 +17,8 @@
 **Название магазина:**
 
 ```html
-{$nameShop = $theme_settings.nameShop}
+{* Название магазина *}
+{$nameShop = $theme_settings.sitename}
 ```
 
 ```
@@ -31,7 +28,8 @@
 **Полное название (с описанием):**
 
 ```html
-{$nameShopFull = $theme_settings.nameShopFull}
+{* Полное описание *}
+{$nameShopFull = $theme_settings.fullDescription}
 ```
 
 ```html
@@ -41,11 +39,31 @@
 **Описание:**
 
 ```html
-{$descriptionShop = $theme_settings.descriptionShop}
+{$fullDescription = $theme_settings.description}
 ```
 
 ```
-{$descriptionShop}
+{$fullDescription}
+```
+
+**Теглайн:**
+
+```
+{$tagline = $theme_settings.tagline}
+```
+
+```
+{$tagline}
+```
+
+**Полный путь логотипа:**
+
+```
+{$logo = $wa_theme_url|cat:$theme_settings.logo}
+```
+
+```
+{$logo}
 ```
 
 
@@ -179,26 +197,55 @@
 {* Категория Каталог *}
 {$categories = $wa->shop->categories(32, null, true)}
 
-    <ul class="category-list nav navbar-nav">
-        {foreach $categories as $cat}
-            <li class="menu-item{if $cat.childs} dropdown{/if}">
-                <a href="{$cat.url}"{if $cat.childs} class="dropdown-toggle"{/if}>{$cat.name}</a>
-                {if $cat.childs}
-                    <div class="dropdown-menu single-dropdown">
-                        <div class="dropdown-inner">
-                            <ul class="list-unstyled megamenu-dropdown column3">
-                                {foreach $cat.childs as $child1}
-                                    <li class="menu-item{if $childs1.childs} dropdown{/if}">
-                                        <a href="{$child1.url}"{if $child1.childs} class="dropdown-toggle"{/if}>{$child1.name}</a>
-                                    </li>
-                                {/foreach}
-                            </ul>
-                        </div>
-                    </div>
-                {/if}
-            </li>
-        {/foreach}
-    </ul>
+<ul id="top-menu" class="top-menu" data-depth="0">
+						{foreach $categories as $cat}
+						<li class="top_level_category dropdown">
+						   <a class="dropdown-item" href="{$cat.url}">{$cat.name}
+						   {if $cat.childs}
+						   <i class="fa fa-angle-right add hidden-xs hidden-sm"></i>
+						   {/if}
+						   </a>
+						   {if $cat.childs}
+						   <span class="pull-xs-right hidden-md hidden-lg">
+						   <span data-target="#top_sub_menu_{$cat.id}" data-toggle="collapse" class="navbar-toggler collapse-icons">
+						   <i class="fa fa-angle-down add"></i>
+						   <i class="fa fa-angle-up remove"></i>
+						   </span>
+						   </span>
+						   {/if}
+						   {if $cat.childs}
+						   <div id="top_sub_menu_{$cat.id}" class="dropdown-menu popover sub-menu collapse">
+							  {foreach $cat.childs as $child}
+							  <ul class="list-unstyled childs_1 category_dropdownmenu  multiple-dropdown-menu " data-depth="1">
+								 <li class="category dropdown sub-category">
+									<a class="dropdown-item dropdown-submenu" href="{$child.url}">{$child.name}</a>
+									{if $child.childs}
+									<span class="pull-xs-right hidden-md hidden-lg">
+									<span data-target="#top_sub_menu_{$child.id}" data-toggle="collapse" class="navbar-toggler collapse-icons">
+									<i class="fa fa-angle-down add"></i>
+									<i class="fa fa-angle-up remove"></i>
+									</span>
+									</span>
+									{/if}
+									{if $child.childs}
+									<div id="top_sub_menu_{$child.id}" class="dropdown-inner collapse">
+									   <ul class="list-unstyled childs_2 top-menu" data-depth="2">
+										  {foreach $child.childs as $child2}
+										  <li class="category">
+											 <a class="dropdown-item" href="{$child2.url}">{$child2.name}</a>
+										  </li>
+										  {/foreach}
+									   </ul>
+									</div>
+									{/if}
+								 </li>
+							  </ul>
+							  {/foreach}
+						   </div>
+						   {/if}
+						</li>
+						{/foreach}                        
+					 </ul>
 ```
 
 
@@ -271,3 +318,23 @@
     Быстрый просмотр
 </button>
 ```
+
+
+
+## Готовые стили
+
+**Для личного кабинета и страниц авторизации и звездочки отзывов**:
+
+```css
+.over{overflow:auto}
+.order-status{color:#fff;font-size:13px;padding:4px}
+.icon16.star,.icon16.star-full{background-image:url(../img/icons.png);background-position:-16px 0}
+.icon16.star-half{background-image:url(../img/icons.png);background-position:-32px 0}
+.icon16.star-empty{background-image:url(../img/icons.png);background-position:-48px 0}
+.icon16.star-hover{background-image:url(../img/icons.png);background-position:-64px 0}
+.icon16{width:16px;height:16px;display:inline-block}
+.wa-field input:not([type="submit"]),.wa-field select, .wa-field-wrapper input:not([type="submit"]),.wa-field-wrapper select{display:inline-block;width:100%!important;margin-bottom:10px;border:1px solid #333;position:relative!important;height:auto!important;opacity:1!important;font-size:16px!important;padding:8px!important}
+@media(min-width:768px) {
+.wa-form,.wa-login-form-fields,.wa-signup-form-fields,.wa-forgotpassword-form-fields{width:50%}
+```
+
