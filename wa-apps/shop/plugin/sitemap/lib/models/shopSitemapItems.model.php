@@ -47,7 +47,7 @@ class shopSitemapItemsModel {
 	 *
 	 *
 	 * @param  array $array
-	 * @param   $key
+	 * @param  string $key
 	 * @return array
 	 */
 	public function uniqueMultidimArray(array $array, string $key): array {
@@ -126,28 +126,37 @@ class shopSitemapItemsModel {
 		}
 		return $items;
 	}
-	
+		
 	/**
 	 * setItemValues
 	 *
+	 * @throws \Exception
 	 * @param  array $params
 	 * @return array
 	 */
 	protected function setItemValues (array $params): array {
-		return [
-			'name' => $params['name'],
+		$result = [
+			'name' => $params['name'] ?? null,
 
-			'depth' => $params['depth'],
+			'depth' => $params['depth'] ?? null,
 
-			'meta_title' => $params['meta_title'],
-			'meta_keywords' => $params['meta_keywords'],
-			'meta_description' => $params['meta_description'],
+			'meta_title' => $params['meta_title'] ?? null,
+			'meta_keywords' => $params['meta_keywords'] ?? null,
+			'meta_description' => $params['meta_description'] ?? null,
 
-			'frontend_url' => $params['frontend_url'],
+			'frontend_url' => $params['frontend_url'] ?? null,
 
-			'is_link' => $params['is_link'],
+			'is_link' => $params['is_link'] ?? null,
 
-			'childs' => $params['childs'],
+			'childs' => $params['childs'] ?? null,
 		];
+
+		foreach ($result as $key => $value) {
+			if ($value === null) {
+				throw new \Exception ("One of the elements was not passed to the array of elements: \"$key\" is required");
+			}
+		}
+
+		return $result;
 	}
 }
