@@ -14,8 +14,18 @@ class shopSitemapItemsModel {
 
 		$this->menuItems = $this->model->query ('
 			SELECT
-				mi.left_key, mi.status, mi.type, mi.id, mi.parent_id, mi.depth, mi.name name, mip.name param_name, mip.value frontend_url
-			FROM menu_item mi JOIN menu_item_params mip ON mi.id = mip.item_id OR mi.type != "link" HAVING mip.name = "url" AND mi.status = "1" ORDER BY left_key ASC
+				mi.left_key,
+				mi.status,
+				mi.type,
+				mi.id,
+				mi.parent_id,
+				mi.depth,
+				mi.name name,
+				mip.name param_name,
+				mip.value frontend_url
+			FROM menu_item mi
+			JOIN menu_item_params mip ON mi.id = mip.item_id OR mi.type != "link"
+			HAVING mip.name = "url" AND mi.status = "1"ORDER BY left_key ASC
 		')->fetchAll ();
 
 		$this->menuItems = $this->uniqueMultidimArray ($this->menuItems, 'id');
@@ -29,9 +39,16 @@ class shopSitemapItemsModel {
 	}
 
 	/**
+	 * uniqueMultidimArray
+	 * 
 	 * Create multidimensional array unique for any single key index.
 	 * e.g I want to create multi dimentional unique array for specific code.
 	 * You can make it unique for any field like id, name or num. 
+	 *
+	 *
+	 * @param  array $array
+	 * @param   $key
+	 * @return array
 	 */
 	public function uniqueMultidimArray(array $array, string $key): array {
 		$temp_array = array();
@@ -47,9 +64,12 @@ class shopSitemapItemsModel {
 		}
 		return $temp_array;
 	}
-
+	
 	/**
-	 * Осторожно! Рекурсия!
+	 * prepareCategoriesRecursive
+	 *
+	 * @param  int $id
+	 * @return array
 	 */
 	protected function prepareCategoriesRecursive (int $id): array {
 		$items = [];
@@ -75,8 +95,12 @@ class shopSitemapItemsModel {
 		return $items;
 	}
 
+		
 	/**
-	 * Осторожно! Рекурсия!
+	 * prepareMenuRecursive
+	 *
+	 * @param  int $id
+	 * @return array
 	 */
 	protected function prepareMenuRecursive (int $id): array {
 		$items = [];
@@ -102,7 +126,13 @@ class shopSitemapItemsModel {
 		}
 		return $items;
 	}
-
+	
+	/**
+	 * setItemValues
+	 *
+	 * @param  array $params
+	 * @return array
+	 */
 	protected function setItemValues (array $params): array {
 		return [
 			'name' => $params['name'],
