@@ -1,4 +1,4 @@
 <?php
 return [
-	'sitemap' => 'frontend/sitemap',
+	'map' => 'frontend/sitemap',
 ];

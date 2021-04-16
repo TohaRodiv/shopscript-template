@@ -14,8 +14,18 @@ class shopSitemapItemsModel {
 
 		$this->menuItems = $this->model->query ('
 			SELECT
-				mi.left_key, mi.status, mi.type, mi.id, mi.parent_id, mi.depth, mi.name name, mip.name param_name, mip.value frontend_url
-			FROM menu_item mi JOIN menu_item_params mip ON mi.id = mip.item_id OR mi.type != "link" HAVING mip.name = "url" AND mi.status = "1" ORDER BY left_key ASC
+				mi.left_key,
+				mi.status,
+				mi.type,
+				mi.id,
+				mi.parent_id,
+				mi.depth,
+				mi.name name,
+				mip.name param_name,
+				mip.value frontend_url
+			FROM menu_item mi
+			JOIN menu_item_params mip ON mi.id = mip.item_id OR mi.type != "link"
+			HAVING mip.name = "url" AND mi.status = "1"ORDER BY left_key ASC
 		')->fetchAll ();
 
 		$this->menuItems = $this->uniqueMultidimArray ($this->menuItems, 'id');
@@ -29,9 +39,16 @@ class shopSitemapItemsModel {
 	}
 
 	/**
+	 * uniqueMultidimArray
+	 * 
 	 * Create multidimensional array unique for any single key index.
 	 * e.g I want to create multi dimentional unique array for specific code.
 	 * You can make it unique for any field like id, name or num. 
+	 *
+	 *
+	 * @param  array $array
+	 * @param  string $key
+	 * @return array
 	 */
 	public function uniqueMultidimArray(array $array, string $key): array {
 		$temp_array = array();
@@ -47,9 +64,12 @@ class shopSitemapItemsModel {
 		}
 		return $temp_array;
 	}
-
+	
 	/**
-	 * Осторожно! Рекурсия!
+	 * prepareCategoriesRecursive
+	 *
+	 * @param  int $id
+	 * @return array
 	 */
 	protected function prepareCategoriesRecursive (int $id): array {
 		$items = [];
@@ -75,8 +95,12 @@ class shopSitemapItemsModel {
 		return $items;
 	}
 
+		
 	/**
-	 * Осторожно! Рекурсия!
+	 * prepareMenuRecursive
+	 *
+	 * @param  int $id
+	 * @return array
 	 */
 	protected function prepareMenuRecursive (int $id): array {
 		$items = [];
@@ -102,22 +126,37 @@ class shopSitemapItemsModel {
 		}
 		return $items;
 	}
-
+		
+	/**
+	 * setItemValues
+	 *
+	 * @throws \Exception
+	 * @param  array $params
+	 * @return array
+	 */
 	protected function setItemValues (array $params): array {
-		return [
-			'name' => $params['name'],
+		$result = [
+			'name' => $params['name'] ?? null,
 
-			'depth' => $params['depth'],
+			'depth' => $params['depth'] ?? null,
 
-			'meta_title' => $params['meta_title'],
-			'meta_keywords' => $params['meta_keywords'],
-			'meta_description' => $params['meta_description'],
+			'meta_title' => $params['meta_title'] ?? null,
+			'meta_keywords' => $params['meta_keywords'] ?? null,
+			'meta_description' => $params['meta_description'] ?? null,
 
-			'frontend_url' => $params['frontend_url'],
+			'frontend_url' => $params['frontend_url'] ?? null,
 
-			'is_link' => $params['is_link'],
+			'is_link' => $params['is_link'] ?? null,
 
-			'childs' => $params['childs'],
+			'childs' => $params['childs'] ?? null,
 		];
+
+		foreach ($result as $key => $value) {
+			if ($value === null) {
+				throw new \Exception ("One of the elements was not passed to the array of elements: \"$key\" is required");
+			}
+		}
+
+		return $result;
 	}
 }
