@@ -1,9 +1,9 @@
 <?php
 class shopSitemapItemsModel {
-	protected waModel $model;
+	protected $model;
 
-	protected array $categoryItems;
-	protected array $menuItems;
+	protected $categoryItems;
+	protected $menuItems;
 
 	public function __construct () {
 		$this->model = new waModel();
